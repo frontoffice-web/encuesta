@@ -5,624 +5,250 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Encuesta de Satisfacción — Playa Luna Roja</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  :root{
-    --bg:#ffffff;--bg2:#f5f5f4;--bg3:#e8e8e6;
-    --text:#1a1a1a;--text2:#6b6b6b;--text3:#9c9c9a;
-    --border:#d4d4d0;--border2:#e2e2de;
-    --radius:10px;--radius-sm:6px;--radius-lg:14px;
-    --blue:#185FA5;--blue-light:#E6F1FB;--blue-mid:#378ADD;
-    --green:#0F6E56;--green-light:#EAF3DE;--green-dark:#3B6D11;
-    --amber:#BA7517;--amber-light:#FAEEDA;
-    --red:#A32D2D;--red-light:#FCEBEB;
-    --font:'Segoe UI',system-ui,-apple-system,sans-serif;
-  }
-  body{font-family:var(--font);background:#f0f0ef;min-height:100vh;padding:1rem 0.5rem 3rem;}
-  .wrapper{max-width:680px;margin:0 auto;}
-  .header{text-align:center;padding:1.5rem 1rem 1rem;margin-bottom:.5rem;}
-  .header h1{font-size:22px;font-weight:600;color:var(--text);}
-  .header p{font-size:13px;color:var(--text2);margin-top:4px;}
-  .tabs{display:flex;background:var(--bg);border-radius:var(--radius-lg);border:0.5px solid var(--border2);overflow:hidden;margin-bottom:1rem;overflow-x:auto;}
-  .tab-btn{background:none;border:none;cursor:pointer;padding:11px 14px;font-size:13px;font-weight:500;color:var(--text2);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;flex:1;}
-  .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--blue-light);}
-  .tab-btn:hover:not(.active){background:var(--bg2);}
-  .card{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;margin-bottom:.85rem;}
-  .card-blue{border-color:#B5D4F4;}
-  .sec-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.07em;margin-bottom:10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;}
-  .alert-info{background:var(--blue-light);border-radius:var(--radius-sm);padding:9px 12px;font-size:12px;color:#0C447C;display:flex;gap:8px;margin-bottom:12px;}
-  .field-group{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
-  .field-group:last-child{margin-bottom:0;}
-  .field-label{font-size:12px;font-weight:600;color:var(--text2);}
-  .req{color:#D85A30;}
-  .inp{width:100%;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:0 12px;height:40px;font-size:14px;font-family:var(--font);background:var(--bg2);color:var(--text);transition:border-color .15s;}
-  .inp:focus{outline:none;border-color:var(--blue-mid);background:var(--bg);}
-  .inp.err{border-color:#D85A30!important;}
-  .errmsg{font-size:12px;color:var(--red);margin-top:3px;display:none;}
-  .errmsg.show{display:block;}
-  .star{font-size:28px;cursor:pointer;color:#d0d0ce;transition:color .12s;user-select:none;}
-  .star.active{color:#EF9F27;}
-  .star:hover{color:#FAC775;}
-  .stars-row{display:flex;gap:4px;margin-top:4px;}
-  .sub-q{display:flex;flex-direction:column;gap:5px;padding:9px 0;border-bottom:0.5px solid var(--border2);}
-  .sub-q:last-child{border-bottom:none;padding-bottom:0;}
-  .sub-label{font-size:13px;color:var(--text);}
-  .choices{display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;}
-  .choice-opt{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);font-size:13px;cursor:pointer;color:var(--text);transition:all .15s;font-family:var(--font);}
-  .choice-opt.sel{background:var(--blue-light);border-color:var(--blue-mid);color:#0C447C;font-weight:600;}
-  .choice-opt:hover:not(.sel){background:var(--bg3);}
-  .nps-btn{width:38px;height:38px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--text);transition:all .15s;font-family:var(--font);}
-  .nps-btn:hover{background:var(--bg3);}
-  .nps-btn.active{background:var(--blue);color:white;border-color:var(--blue);}
-  .tag{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;margin:3px;cursor:pointer;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);transition:all .12s;}
-  .tag.sel{background:var(--green-light);border-color:#639922;color:var(--green-dark);}
-  .tag:hover:not(.sel){background:var(--bg3);}
-  textarea{width:100%;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:var(--font);background:var(--bg2);color:var(--text);resize:vertical;min-height:80px;transition:border-color .15s;}
-  textarea:focus{outline:none;border-color:var(--blue-mid);background:var(--bg);}
-  .btn-primary{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font);transition:opacity .15s;}
-  .btn-primary:hover{opacity:.88;}
-  .btn-primary:disabled{background:#B5D4F4;cursor:not-allowed;opacity:1;}
-  .btn-secondary{padding:10px 16px;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);font-size:13px;cursor:pointer;color:var(--text);font-family:var(--font);transition:background .15s;}
-  .btn-secondary:hover{background:var(--bg2);}
-  .btn-green{padding:9px 16px;border:0.5px solid #639922;border-radius:var(--radius-sm);background:var(--green-light);font-size:13px;cursor:pointer;color:var(--green-dark);font-family:var(--font);font-weight:600;}
-  .btn-green:hover{background:#d5eabc;}
-  .btn-danger{padding:9px 16px;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);font-size:13px;cursor:pointer;color:var(--text2);font-family:var(--font);}
-  .progress-bar{height:4px;background:var(--bg3);border-radius:2px;margin-bottom:1.25rem;overflow:hidden;}
-  .progress-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .4s;}
-  .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-bottom:1.25rem;}
-  .metric-card{background:var(--bg2);border-radius:var(--radius-sm);padding:.9rem;text-align:center;}
-  .metric-val{font-size:26px;font-weight:600;color:var(--text);}
-  .metric-lbl{font-size:12px;color:var(--text2);margin-top:3px;}
-  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:13px;}
-  .bar-track{flex:1;height:9px;background:var(--bg3);border-radius:5px;overflow:hidden;}
-  .bar-fill{height:100%;border-radius:5px;transition:width .7s;}
-  .pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
-  .card-case{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1rem 1.1rem;margin-bottom:.7rem;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
-  .card-case:hover{border-color:var(--blue-mid);box-shadow:0 2px 8px rgba(0,0,0,.06);}
-  .action-row{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);margin-bottom:6px;font-size:13px;background:var(--bg);}
-  select{border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:0 10px;height:36px;font-size:13px;font-family:var(--font);background:var(--bg2);color:var(--text);cursor:pointer;}
-  select:focus{outline:none;border-color:var(--blue-mid);}
-  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center;padding:1rem;}
-  .overlay.open{display:flex;}
-  .modal{background:var(--bg);border-radius:var(--radius-lg);padding:1.5rem;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;}
-  .thanks{text-align:center;padding:3rem 1rem;}
-  .thanks-icon{width:64px;height:64px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;}
-  .filt-row{display:flex;gap:5px;flex-wrap:wrap;}
-  .filt{padding:5px 12px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);font-size:12px;cursor:pointer;font-family:var(--font);color:var(--text);transition:all .15s;}
-  .filt.active{background:var(--blue-light);border-color:var(--blue-mid);color:#0C447C;font-weight:600;}
-  .qr-box{background:white;border-radius:var(--radius-lg);border:0.5px solid var(--border2);padding:1.5rem;display:inline-block;text-align:center;}
-  @media print{.no-print{display:none!important;}}
-  @media(max-width:480px){.tab-btn{padding:10px 10px;font-size:12px;}.star{font-size:24px;}}
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#ffffff;--bg2:#f5f5f4;--bg3:#e8e8e6;
+  --text:#1a1a1a;--text2:#6b6b6b;--text3:#9c9c9a;
+  --border:#d4d4d0;--border2:#e2e2de;
+  --radius:10px;--radius-sm:6px;--radius-lg:14px;
+  --blue:#185FA5;--blue-light:#E6F1FB;--blue-mid:#378ADD;
+  --green:#0F6E56;--green-light:#EAF3DE;--green-dark:#3B6D11;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+}
+body{font-family:var(--font);background:#f0f0ef;min-height:100vh;padding:1rem 0.5rem 3rem;}
+.wrapper{max-width:600px;margin:0 auto;}
+.header{text-align:center;padding:1.5rem 1rem 1rem;margin-bottom:.5rem;}
+.header h1{font-size:22px;font-weight:600;color:var(--text);}
+.header p{font-size:13px;color:var(--text2);margin-top:4px;}
+.card{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;margin-bottom:.85rem;}
+.card-blue{border-color:#B5D4F4;}
+.sec-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.07em;margin-bottom:10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;}
+.alert-info{background:var(--blue-light);border-radius:var(--radius-sm);padding:9px 12px;font-size:12px;color:#0C447C;display:flex;gap:8px;margin-bottom:12px;}
+.field-group{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.field-group:last-child{margin-bottom:0;}
+.field-label{font-size:12px;font-weight:600;color:var(--text2);}
+.req{color:#D85A30;}
+.inp{width:100%;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:0 12px;height:40px;font-size:14px;font-family:var(--font);background:var(--bg2);color:var(--text);transition:border-color .15s;}
+.inp:focus{outline:none;border-color:var(--blue-mid);background:var(--bg);}
+.inp.err{border-color:#D85A30!important;}
+.errmsg{font-size:12px;color:#A32D2D;margin-top:3px;display:none;}
+.errmsg.show{display:block;}
+.star{font-size:28px;cursor:pointer;color:#d0d0ce;transition:color .12s;user-select:none;}
+.star.active{color:#EF9F27;}
+.stars-row{display:flex;gap:4px;margin-top:4px;}
+.sub-q{display:flex;flex-direction:column;gap:5px;padding:9px 0;border-bottom:0.5px solid var(--border2);}
+.sub-q:last-child{border-bottom:none;padding-bottom:0;}
+.sub-label{font-size:13px;color:var(--text);}
+.choices{display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;}
+.choice-opt{padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg2);font-size:13px;cursor:pointer;color:var(--text);transition:all .15s;font-family:var(--font);}
+.choice-opt.sel{background:var(--blue-light);border-color:var(--blue-mid);color:#0C447C;font-weight:600;}
+.nps-btn{width:38px;height:38px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--text);transition:all .15s;font-family:var(--font);}
+.nps-btn.active{background:var(--blue);color:white;border-color:var(--blue);}
+.tag{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;margin:3px;cursor:pointer;border:0.5px solid var(--border);background:var(--bg2);color:var(--text2);}
+.tag.sel{background:var(--green-light);border-color:#639922;color:var(--green-dark);}
+textarea{width:100%;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:var(--font);background:var(--bg2);color:var(--text);resize:vertical;min-height:80px;}
+textarea:focus{outline:none;border-color:var(--blue-mid);}
+.btn-primary{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font);}
+.btn-primary:disabled{background:#B5D4F4;cursor:not-allowed;}
+.btn-secondary{padding:10px 16px;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);font-size:13px;cursor:pointer;color:var(--text);font-family:var(--font);}
+.progress-bar{height:4px;background:var(--bg3);border-radius:2px;margin-bottom:1.25rem;overflow:hidden;}
+.progress-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .4s;}
+.thanks{text-align:center;padding:3rem 1rem;}
+.sending{text-align:center;padding:2rem;font-size:14px;color:var(--text2);}
+.spinner{width:36px;height:36px;border:3px solid var(--bg3);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div class="header no-print">
-    <h1>🏖️ Playa Luna Roja</h1>
-    <p>Sistema de encuesta de satisfacción y seguimiento</p>
+  <div class="header">
+    <div style="width:52px;height:52px;background:var(--blue-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px;">🏖️</div>
+    <h1>Playa Luna Roja</h1>
+    <p>Encuesta de satisfacción · Solo 3 minutos</p>
   </div>
 
-  <div class="tabs no-print">
-    <button class="tab-btn active" onclick="showTab('survey')" id="tab-survey">📋 Encuesta</button>
-    <button class="tab-btn" onclick="showTab('dashboard')" id="tab-dashboard">📊 Resultados</button>
-    <button class="tab-btn" onclick="showTab('followup')" id="tab-followup">✅ Seguimiento</button>
-    <button class="tab-btn" onclick="showTab('actions')" id="tab-actions">🔧 Medidas</button>
-    <button class="tab-btn" onclick="showTab('qr')" id="tab-qr">📱 QR</button>
-  </div>
-
-  <!-- ========== ENCUESTA ========== -->
-  <div id="view-survey">
-    <div style="text-align:center;margin-bottom:1.1rem;" class="no-print">
-      <div style="width:52px;height:52px;background:var(--blue-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px;">🏖️</div>
-      <h2 style="font-size:20px;font-weight:600;">¿Cómo fue su estadía?</h2>
-      <p style="font-size:13px;color:var(--text2);margin-top:5px;">Playa Luna Roja · Solo 3 minutos</p>
-    </div>
-
-    <div id="survey-form">
-      <!-- PASO 1 -->
-      <div id="step-1">
-        <div class="progress-bar"><div class="progress-fill" style="width:16%"></div></div>
-        <div class="card card-blue">
-          <div class="sec-title">👤 Sus datos de contacto</div>
-          <div class="alert-info">🔒 Solo para contactarle si necesita seguimiento. No se comparten con terceros.</div>
-          <div class="field-group">
-            <label class="field-label">Nombre completo <span class="req">*</span></label>
-            <input class="inp" type="text" id="inp-name" placeholder="Ej: María González" oninput="clearE('name');chkStep1()">
-            <span class="errmsg" id="err-name">Ingrese su nombre completo.</span>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Teléfono <span class="req">*</span></label>
-            <input class="inp" type="tel" id="inp-phone" placeholder="Ej: +54 9 223 456 7890" oninput="clearE('phone');chkStep1()">
-            <span class="errmsg" id="err-phone">Ingrese un teléfono válido.</span>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Tipo de alojamiento</label>
-            <div class="choices">
-              <span class="choice-opt" onclick="selChoice(this,'aloj')">Cabaña</span>
-              <span class="choice-opt" onclick="selChoice(this,'aloj')">Suite</span>
-            </div>
+  <div id="survey-form">
+    <!-- PASO 1 -->
+    <div id="step-1">
+      <div class="progress-bar"><div class="progress-fill" style="width:16%"></div></div>
+      <div class="card card-blue">
+        <div class="sec-title">👤 Sus datos de contacto</div>
+        <div class="alert-info">🔒 Solo para contactarle si necesita seguimiento. No se comparten con terceros.</div>
+        <div class="field-group">
+          <label class="field-label">Nombre completo <span class="req">*</span></label>
+          <input class="inp" type="text" id="inp-name" placeholder="Ej: María González" oninput="clearE('name');chkStep1()">
+          <span class="errmsg" id="err-name">Ingrese su nombre completo.</span>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Teléfono <span class="req">*</span></label>
+          <input class="inp" type="tel" id="inp-phone" placeholder="Ej: +54 9 223 456 7890" oninput="clearE('phone');chkStep1()">
+          <span class="errmsg" id="err-phone">Ingrese un teléfono válido.</span>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Tipo de alojamiento</label>
+          <div class="choices">
+            <span class="choice-opt" onclick="selChoice(this,'aloj')">Cabaña</span>
+            <span class="choice-opt" onclick="selChoice(this,'aloj')">Suite</span>
           </div>
         </div>
-        <button onclick="goStep(2)" id="btn-step1" disabled class="btn-primary" style="opacity:.5">Continuar →</button>
       </div>
-
-      <!-- PASO 2 -->
-      <div id="step-2" style="display:none">
-        <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
-        <div class="card">
-          <div class="sec-title">🗝️ Llegada y check-in</div>
-          <div class="sub-q"><span class="sub-label">¿El proceso de check-in fue ágil y claro?</span><div class="stars-row" id="s-checkin"></div></div>
-          <div class="sub-q"><span class="sub-label">¿El personal de recepción fue amable y resolutivo?</span><div class="stars-row" id="s-recep"></div></div>
-          <div class="sub-q"><span class="sub-label">¿La información sobre los servicios fue clara al ingresar?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'info-ingreso')">Sí, muy clara</span><span class="choice-opt" onclick="selChoice(this,'info-ingreso')">Parcialmente</span><span class="choice-opt" onclick="selChoice(this,'info-ingreso')">No del todo</span></div></div>
-        </div>
-        <div class="card">
-          <div class="sec-title">🏠 Cabaña / Suite</div>
-          <div class="sub-q"><span class="sub-label">Limpieza general</span><div class="stars-row" id="s-limpieza"></div></div>
-          <div class="sub-q"><span class="sub-label">Comodidad y equipamiento (muebles, electrodomésticos, clima)</span><div class="stars-row" id="s-comfort"></div></div>
-          <div class="sub-q"><span class="sub-label">Blanquería (sábanas, toallas, almohadas)</span><div class="stars-row" id="s-blanq"></div></div>
-          <div class="sub-q"><span class="sub-label">¿La cabaña / suite coincidió con lo que esperaba?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'expectativa')">Superó expectativas</span><span class="choice-opt" onclick="selChoice(this,'expectativa')">Coincidió</span><span class="choice-opt" onclick="selChoice(this,'expectativa')">Por debajo</span></div></div>
-          <div class="sub-q"><span class="sub-label">¿Con qué frecuencia se realizó la limpieza?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'freq-limpieza')">Diaria</span><span class="choice-opt" onclick="selChoice(this,'freq-limpieza')">Cada 2 días</span><span class="choice-opt" onclick="selChoice(this,'freq-limpieza')">No se realizó</span></div></div>
-        </div>
-        <div style="display:flex;gap:8px;"><button onclick="goStep(1)" class="btn-secondary">←</button><button onclick="goStep(3)" class="btn-primary" style="flex:1">Continuar →</button></div>
-      </div>
-
-      <!-- PASO 3 -->
-      <div id="step-3" style="display:none">
-        <div class="progress-bar"><div class="progress-fill" style="width:58%"></div></div>
-        <div class="card">
-          <div class="sec-title">☕ Desayuno (incluido)</div>
-          <div class="sub-q"><span class="sub-label">Variedad y calidad de los alimentos</span><div class="stars-row" id="s-desay-var"></div></div>
-          <div class="sub-q"><span class="sub-label">Presentación y temperatura</span><div class="stars-row" id="s-desay-pres"></div></div>
-          <div class="sub-q"><span class="sub-label">Horarios del desayuno</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'horario-desay')">Muy convenientes</span><span class="choice-opt" onclick="selChoice(this,'horario-desay')">Aceptables</span><span class="choice-opt" onclick="selChoice(this,'horario-desay')">Poco convenientes</span></div></div>
-        </div>
-        <div class="card">
-          <div class="sec-title">🍽️ Restaurante (almuerzo y merienda)</div>
-          <div class="sub-q"><span class="sub-label">¿Usó el servicio de almuerzo o merienda?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'uso-rest');toggleRest(this)">Sí, almuerzo</span><span class="choice-opt" onclick="selChoice(this,'uso-rest');toggleRest(this)">Sí, merienda</span><span class="choice-opt" onclick="selChoice(this,'uso-rest');toggleRest(this)">Ambos</span><span class="choice-opt" onclick="selChoice(this,'uso-rest');toggleRest(this)">No utilicé</span></div></div>
-          <div id="rest-detail" style="display:none">
-            <div class="sub-q"><span class="sub-label">Calidad y sabor de los platos</span><div class="stars-row" id="s-rest-cal"></div></div>
-            <div class="sub-q"><span class="sub-label">Atención del personal del restaurante</span><div class="stars-row" id="s-rest-aten"></div></div>
-            <div class="sub-q"><span class="sub-label">Relación precio / porción</span><div class="stars-row" id="s-rest-precio"></div></div>
-            <div class="sub-q"><span class="sub-label">Variedad del menú</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'menu-var')">Muy variado</span><span class="choice-opt" onclick="selChoice(this,'menu-var')">Suficiente</span><span class="choice-opt" onclick="selChoice(this,'menu-var')">Limitado</span></div></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;"><button onclick="goStep(2)" class="btn-secondary">←</button><button onclick="goStep(4)" class="btn-primary" style="flex:1">Continuar →</button></div>
-      </div>
-
-      <!-- PASO 4 -->
-      <div id="step-4" style="display:none">
-        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
-        <div class="card">
-          <div class="sec-title">🌊 Entorno y playa</div>
-          <div class="sub-q"><span class="sub-label">Limpieza y mantenimiento de espacios comunes</span><div class="stars-row" id="s-comunes"></div></div>
-          <div class="sub-q"><span class="sub-label">Tranquilidad y privacidad del complejo</span><div class="stars-row" id="s-privacidad"></div></div>
-          <div class="sub-q"><span class="sub-label">Acceso y cercanía a la playa</span><div class="stars-row" id="s-playa"></div></div>
-          <div class="sub-q"><span class="sub-label">Seguridad general del complejo</span><div class="stars-row" id="s-seguridad"></div></div>
-        </div>
-        <div class="card">
-          <div class="sec-title">💰 Valoración general</div>
-          <div class="sub-q"><span class="sub-label">Relación precio / valor de la estadía</span><div class="stars-row" id="s-precio"></div></div>
-          <div class="sub-q"><span class="sub-label">¿Cómo nos conoció?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'como-conocio')">Redes sociales</span><span class="choice-opt" onclick="selChoice(this,'como-conocio')">Recomendación</span><span class="choice-opt" onclick="selChoice(this,'como-conocio')">Booking / web</span><span class="choice-opt" onclick="selChoice(this,'como-conocio')">Ya conocía</span></div></div>
-          <div class="sub-q"><span class="sub-label">¿Volvería a alojarse con nosotros?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'volveria')">Sí, sin dudas</span><span class="choice-opt" onclick="selChoice(this,'volveria')">Probablemente</span><span class="choice-opt" onclick="selChoice(this,'volveria')">No lo creo</span></div></div>
-        </div>
-        <div style="display:flex;gap:8px;"><button onclick="goStep(3)" class="btn-secondary">←</button><button onclick="goStep(5)" class="btn-primary" style="flex:1">Continuar →</button></div>
-      </div>
-
-      <!-- PASO 5 -->
-      <div id="step-5" style="display:none">
-        <div class="progress-bar"><div class="progress-fill" style="width:92%"></div></div>
-        <div class="card">
-          <div class="sec-title">❤️ Recomendación</div>
-          <p style="font-size:13px;color:var(--text2);margin-bottom:10px;">¿Con qué probabilidad nos recomendaría? <span style="font-size:11px;">(0 = nada · 10 = definitivamente)</span></p>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;" id="nps-row"></div>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:5px;"><span>No lo haría</span><span>Definitivamente sí</span></div>
-        </div>
-        <div class="card">
-          <div class="sec-title">💬 ¿Qué podríamos mejorar?</div>
-          <div style="display:flex;flex-wrap:wrap;margin-bottom:10px;" id="tags-container"></div>
-          <textarea id="comment" placeholder="Cuéntenos su experiencia. ¿Qué fue lo mejor? ¿Qué cambiaría?..."></textarea>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <button onclick="goStep(4)" class="btn-secondary">←</button>
-          <button class="btn-primary" id="submit-btn" disabled onclick="submitSurvey()" style="flex:1">Enviar encuesta ✈️</button>
-        </div>
-        <p style="text-align:center;font-size:11px;color:var(--text3);margin-top:8px;">Sus datos son confidenciales · Playa Luna Roja</p>
-      </div>
-    </div><!-- /survey-form -->
-
-    <div id="survey-thanks" class="thanks" style="display:none">
-      <div class="thanks-icon">✅</div>
-      <h2 style="font-size:20px;font-weight:600;margin-bottom:8px;">¡Muchas gracias!</h2>
-      <p style="font-size:14px;color:var(--text2);">Su opinión nos ayuda a mejorar cada temporada.<br>¡Esperamos verle pronto en Playa Luna Roja!</p>
-      <button onclick="resetSurvey()" class="btn-secondary" style="margin-top:20px;">Enviar otra encuesta</button>
+      <button onclick="goStep(2)" id="btn-step1" disabled class="btn-primary" style="opacity:.5">Continuar →</button>
     </div>
-  </div><!-- /view-survey -->
 
-  <!-- ========== DASHBOARD ========== -->
-  <div id="view-dashboard" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1rem;">
-      <div><h2 style="font-size:17px;font-weight:600;">Panel de resultados</h2><p style="font-size:12px;color:var(--text2);">Playa Luna Roja · <strong id="n-resp">0</strong> respuestas</p></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button onclick="loadDemo()" class="btn-secondary" style="font-size:12px;">🧪 Datos demo</button>
-        <button onclick="exportExcel()" class="btn-green" style="font-size:12px;">📥 Exportar Excel</button>
-        <button onclick="clearData()" class="btn-danger" style="font-size:12px;">🗑 Limpiar</button>
+    <!-- PASO 2 -->
+    <div id="step-2" style="display:none">
+      <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+      <div class="card">
+        <div class="sec-title">🗝️ Llegada y check-in</div>
+        <div class="sub-q"><span class="sub-label">¿El proceso de check-in fue ágil y claro?</span><div class="stars-row" id="s-checkin"></div></div>
+        <div class="sub-q"><span class="sub-label">¿El personal de recepción fue amable y resolutivo?</span><div class="stars-row" id="s-recep"></div></div>
+        <div class="sub-q"><span class="sub-label">¿La información sobre los servicios fue clara al ingresar?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'info-ingreso')">Sí, muy clara</span><span class="choice-opt" onclick="selChoice(this,'info-ingreso')">Parcialmente</span><span class="choice-opt" onclick="selChoice(this,'info-ingreso')">No del todo</span></div></div>
       </div>
+      <div class="card">
+        <div class="sec-title">🏠 Cabaña / Suite</div>
+        <div class="sub-q"><span class="sub-label">Limpieza general</span><div class="stars-row" id="s-limpieza"></div></div>
+        <div class="sub-q"><span class="sub-label">Comodidad y equipamiento</span><div class="stars-row" id="s-comfort"></div></div>
+        <div class="sub-q"><span class="sub-label">Blanquería (sábanas, toallas, almohadas)</span><div class="stars-row" id="s-blanq"></div></div>
+        <div class="sub-q"><span class="sub-label">¿La cabaña / suite coincidió con lo que esperaba?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'expectativa')">Superó expectativas</span><span class="choice-opt" onclick="selChoice(this,'expectativa')">Coincidió</span><span class="choice-opt" onclick="selChoice(this,'expectativa')">Por debajo</span></div></div>
+        <div class="sub-q"><span class="sub-label">¿Con qué frecuencia se realizó la limpieza?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'freq-limpieza')">Diaria</span><span class="choice-opt" onclick="selChoice(this,'freq-limpieza')">Cada 2 días</span><span class="choice-opt" onclick="selChoice(this,'freq-limpieza')">No se realizó</span></div></div>
+      </div>
+      <div style="display:flex;gap:8px;"><button onclick="goStep(1)" class="btn-secondary">←</button><button onclick="goStep(3)" class="btn-primary" style="flex:1">Continuar →</button></div>
     </div>
-    <div class="metric-grid">
-      <div class="metric-card"><div class="metric-val" id="m-overall">—</div><div class="metric-lbl">Satisfacción general</div></div>
-      <div class="metric-card"><div class="metric-val" id="m-nps">—</div><div class="metric-lbl">NPS promedio</div></div>
-      <div class="metric-card"><div class="metric-val" id="m-promo">—%</div><div class="metric-lbl">Promotores (9-10)</div></div>
-      <div class="metric-card"><div class="metric-val" id="m-vol">—%</div><div class="metric-lbl">Volvería</div></div>
-    </div>
-    <div class="card"><div class="sec-title">🏠 Cabaña / Suite</div><div id="bars-cabin"></div></div>
-    <div class="card"><div class="sec-title">🍽️ Gastronomía</div><div id="bars-gastro"></div></div>
-    <div class="card"><div class="sec-title">🌊 Entorno y playa</div><div id="bars-beach"></div></div>
-    <div class="card"><div class="sec-title">🏷️ Tipo de alojamiento</div><div id="bars-tipo"></div></div>
-    <div class="card"><div class="sec-title">📣 ¿Cómo nos conocieron?</div><div id="bars-conocio"></div></div>
-    <div class="card"><div class="sec-title">⚠️ Puntos de mejora mencionados</div><div id="tag-bars"></div></div>
-    <div class="card"><div class="sec-title">📈 Distribución NPS</div><div style="position:relative;width:100%;height:180px;"><canvas id="nps-chart"></canvas></div></div>
-  </div>
 
-  <!-- ========== SEGUIMIENTO ========== -->
-  <div id="view-followup" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;">
-      <div><h2 style="font-size:17px;font-weight:600;">Seguimiento de huéspedes</h2><p style="font-size:12px;color:var(--text2);">Gestioná el contacto y estado de cada caso</p></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button onclick="loadDemo()" class="btn-secondary" style="font-size:12px;">🧪 Demo</button>
-        <button onclick="exportExcel()" class="btn-green" style="font-size:12px;">📥 Excel</button>
+    <!-- PASO 3 -->
+    <div id="step-3" style="display:none">
+      <div class="progress-bar"><div class="progress-fill" style="width:58%"></div></div>
+      <div class="card">
+        <div class="sec-title">☕ Desayuno (incluido)</div>
+        <div class="sub-q"><span class="sub-label">Variedad y calidad de los alimentos</span><div class="stars-row" id="s-desay-var"></div></div>
+        <div class="sub-q"><span class="sub-label">Presentación y temperatura</span><div class="stars-row" id="s-desay-pres"></div></div>
+        <div class="sub-q"><span class="sub-label">Horarios del desayuno</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'horario-desay')">Muy convenientes</span><span class="choice-opt" onclick="selChoice(this,'horario-desay')">Aceptables</span><span class="choice-opt" onclick="selChoice(this,'horario-desay')">Poco convenientes</span></div></div>
       </div>
-    </div>
-    <div class="filt-row" style="margin-bottom:.9rem;" id="filt-btns">
-      <button onclick="setFilt('all')" data-f="all" class="filt active">Todos</button>
-      <button onclick="setFilt('detractor')" data-f="detractor" class="filt">Detractores</button>
-      <button onclick="setFilt('passive')" data-f="passive" class="filt">Pasivos</button>
-      <button onclick="setFilt('promoter')" data-f="promoter" class="filt">Promotores</button>
-      <button onclick="setFilt('pending')" data-f="pending" class="filt">Pendientes</button>
-    </div>
-    <div class="metric-grid" id="fu-stats"></div>
-    <div id="followup-list"></div>
-  </div>
-
-  <!-- MODAL DETALLE -->
-  <div class="overlay" id="modal-overlay">
-    <div class="modal">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
-        <h3 style="font-size:15px;font-weight:600;" id="modal-title">Detalle del caso</h3>
-        <button onclick="closeModal()" class="btn-secondary" style="padding:6px 10px;">✕</button>
-      </div>
-      <div id="modal-body"></div>
-      <div style="border-top:0.5px solid var(--border2);padding-top:1rem;margin-top:1rem;">
-        <p style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Registrar acción</p>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <select id="act-type" style="flex:1;min-width:150px;"><option value="">Tipo de acción...</option><option>Llamada telefónica</option><option>WhatsApp</option><option>Email</option><option>Atención presencial</option><option>Compensación ofrecida</option><option>Derivado a gerencia</option></select>
-            <select id="act-result" style="flex:1;min-width:150px;"><option value="">Resultado...</option><option>Aplica — resuelto</option><option>Aplica — en proceso</option><option>No aplica — sin acción</option><option>Sin respuesta del huésped</option></select>
-          </div>
-          <textarea id="act-note" placeholder="Descripción de lo actuado (opcional)..." style="min-height:60px;"></textarea>
-          <button onclick="saveAction()" style="padding:10px 20px;background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;align-self:flex-end;font-family:var(--font);">Guardar acción</button>
+      <div class="card">
+        <div class="sec-title">🍽️ Restaurante (almuerzo y merienda)</div>
+        <div class="sub-q"><span class="sub-label">¿Usó el servicio de almuerzo o merienda?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'uso-rest');toggleRest(this)">Sí, almuerzo</span><span class="choice-opt" onclick="selChoice(this,'uso-rest');toggleRest(this)">Sí, merienda</span><span class="choice-opt" onclick="selChoice(this,'uso-rest');toggleRest(this)">Ambos</span><span class="choice-opt" onclick="selChoice(this,'uso-rest');toggleRest(this)">No utilicé</span></div></div>
+        <div id="rest-detail" style="display:none">
+          <div class="sub-q"><span class="sub-label">Calidad y sabor de los platos</span><div class="stars-row" id="s-rest-cal"></div></div>
+          <div class="sub-q"><span class="sub-label">Atención del personal del restaurante</span><div class="stars-row" id="s-rest-aten"></div></div>
+          <div class="sub-q"><span class="sub-label">Relación precio / porción</span><div class="stars-row" id="s-rest-precio"></div></div>
+          <div class="sub-q"><span class="sub-label">Variedad del menú</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'menu-var')">Muy variado</span><span class="choice-opt" onclick="selChoice(this,'menu-var')">Suficiente</span><span class="choice-opt" onclick="selChoice(this,'menu-var')">Limitado</span></div></div>
         </div>
       </div>
-      <div id="modal-history"></div>
+      <div style="display:flex;gap:8px;"><button onclick="goStep(2)" class="btn-secondary">←</button><button onclick="goStep(4)" class="btn-primary" style="flex:1">Continuar →</button></div>
     </div>
-  </div>
 
-  <!-- ========== MEDIDAS ========== -->
-  <div id="view-actions" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;">
-      <div><h2 style="font-size:17px;font-weight:600;">Medidas tomadas</h2><p style="font-size:12px;color:var(--text2);">Resumen de todas las acciones registradas</p></div>
+    <!-- PASO 4 -->
+    <div id="step-4" style="display:none">
+      <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+      <div class="card">
+        <div class="sec-title">🌊 Entorno y playa</div>
+        <div class="sub-q"><span class="sub-label">Limpieza y mantenimiento de espacios comunes</span><div class="stars-row" id="s-comunes"></div></div>
+        <div class="sub-q"><span class="sub-label">Tranquilidad y privacidad del complejo</span><div class="stars-row" id="s-privacidad"></div></div>
+        <div class="sub-q"><span class="sub-label">Acceso y cercanía a la playa</span><div class="stars-row" id="s-playa"></div></div>
+        <div class="sub-q"><span class="sub-label">Seguridad general del complejo</span><div class="stars-row" id="s-seguridad"></div></div>
+      </div>
+      <div class="card">
+        <div class="sec-title">💰 Valoración general</div>
+        <div class="sub-q"><span class="sub-label">Relación precio / valor de la estadía</span><div class="stars-row" id="s-precio"></div></div>
+        <div class="sub-q"><span class="sub-label">¿Cómo nos conoció?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'como-conocio')">Redes sociales</span><span class="choice-opt" onclick="selChoice(this,'como-conocio')">Recomendación</span><span class="choice-opt" onclick="selChoice(this,'como-conocio')">Booking / web</span><span class="choice-opt" onclick="selChoice(this,'como-conocio')">Ya conocía</span></div></div>
+        <div class="sub-q"><span class="sub-label">¿Volvería a alojarse con nosotros?</span><div class="choices"><span class="choice-opt" onclick="selChoice(this,'volveria')">Sí, sin dudas</span><span class="choice-opt" onclick="selChoice(this,'volveria')">Probablemente</span><span class="choice-opt" onclick="selChoice(this,'volveria')">No lo creo</span></div></div>
+      </div>
+      <div style="display:flex;gap:8px;"><button onclick="goStep(3)" class="btn-secondary">←</button><button onclick="goStep(5)" class="btn-primary" style="flex:1">Continuar →</button></div>
+    </div>
+
+    <!-- PASO 5 -->
+    <div id="step-5" style="display:none">
+      <div class="progress-bar"><div class="progress-fill" style="width:92%"></div></div>
+      <div class="card">
+        <div class="sec-title">❤️ Recomendación</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:10px;">¿Con qué probabilidad nos recomendaría? <span style="font-size:11px;">(0 = nada · 10 = definitivamente)</span></p>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;" id="nps-row"></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:5px;"><span>No lo haría</span><span>Definitivamente sí</span></div>
+      </div>
+      <div class="card">
+        <div class="sec-title">💬 ¿Qué podríamos mejorar?</div>
+        <div style="display:flex;flex-wrap:wrap;margin-bottom:10px;" id="tags-container"></div>
+        <textarea id="comment" placeholder="Cuéntenos su experiencia. ¿Qué fue lo mejor? ¿Qué cambiaría?..."></textarea>
+      </div>
       <div style="display:flex;gap:8px;">
-        <button onclick="loadDemo()" class="btn-secondary" style="font-size:12px;">🧪 Demo</button>
-        <button onclick="exportExcel()" class="btn-green" style="font-size:12px;">📥 Excel</button>
+        <button onclick="goStep(4)" class="btn-secondary">←</button>
+        <button class="btn-primary" id="submit-btn" disabled onclick="submitSurvey()" style="flex:1">Enviar encuesta ✈️</button>
       </div>
-    </div>
-    <div class="metric-grid" id="act-metrics"></div>
-    <div class="card"><div class="sec-title">📋 Acciones por tipo</div><div id="act-type-bars"></div></div>
-    <div class="card"><div class="sec-title">📊 Resultados</div><div id="act-result-bars"></div></div>
-    <div class="card"><div class="sec-title">🕐 Historial completo</div><div id="act-all-list"></div></div>
-  </div>
-
-  <!-- ========== QR ========== -->
-  <div id="view-qr" style="display:none">
-    <h2 style="font-size:17px;font-weight:600;margin-bottom:4px;">Código QR</h2>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem;">Imprimilo y colocalo en las cabañas, restaurante o recepción.</p>
-    <div style="text-align:center;margin-bottom:1.25rem;">
-      <div class="qr-box">
-        <div id="qr-code" style="margin:0 auto;width:220px;height:220px;"></div>
-        <p style="font-size:11px;color:#888;margin-top:10px;">playalunaroja.com · Encuesta de satisfacción</p>
-      </div>
-    </div>
-    <div class="card" style="margin-bottom:1rem;">
-      <div class="sec-title">🔗 URL de la encuesta</div>
-      <div style="display:flex;gap:8px;">
-        <input class="inp" type="text" id="qr-url" value="https://playalunaroja.com/portal/es-es/2721/Home" style="flex:1;font-size:12px;">
-        <button onclick="regenQR()" style="padding:0 14px;background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--font);">Actualizar</button>
-      </div>
-      <p style="font-size:11px;color:var(--text3);margin-top:6px;">Si cambia la URL del sistema, actualizá el QR desde aquí.</p>
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1.25rem;">
-      <button onclick="downloadQR()" style="flex:1;min-width:160px;padding:13px;background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);">⬇️ Descargar QR (PNG)</button>
-      <button onclick="printQR()" style="flex:1;min-width:160px;padding:13px;background:var(--bg2);color:var(--text);border:0.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font);">🖨️ Imprimir QR</button>
-    </div>
-    <div class="card">
-      <div class="sec-title">📍 Sugerencias de ubicación</div>
-      <div style="font-size:13px;color:var(--text2);display:flex;flex-direction:column;gap:8px;">
-        <span>🏠 Portafolio o mesa de cada cabaña / suite</span>
-        <span>☕ Mesa del restaurante (desayuno, almuerzo, merienda)</span>
-        <span>🧾 Factura de check-out en recepción</span>
-        <span>🌊 Cartel en el acceso a la playa</span>
-      </div>
+      <p style="text-align:center;font-size:11px;color:var(--text3);margin-top:8px;">Sus datos son confidenciales · Playa Luna Roja</p>
     </div>
   </div>
 
-</div><!-- /wrapper -->
+  <!-- ENVIANDO -->
+  <div id="sending" class="sending" style="display:none">
+    <div class="spinner"></div>
+    <p>Enviando su encuesta...</p>
+  </div>
 
-<!-- LIBRERÍAS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <!-- GRACIAS -->
+  <div id="survey-thanks" class="thanks" style="display:none">
+    <div style="width:64px;height:64px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;">✅</div>
+    <h2 style="font-size:20px;font-weight:600;margin-bottom:8px;">¡Muchas gracias!</h2>
+    <p style="font-size:14px;color:var(--text2);">Su opinión nos ayuda a mejorar cada temporada.<br>¡Esperamos verle pronto en Playa Luna Roja!</p>
+  </div>
+
+  <!-- ERROR -->
+  <div id="survey-error" style="display:none;text-align:center;padding:2rem;">
+    <div style="font-size:28px;margin-bottom:12px;">⚠️</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:16px;">Hubo un problema al enviar. Por favor intentá de nuevo.</p>
+    <button onclick="retrySubmit()" class="btn-primary" style="width:auto;padding:10px 24px;">Reintentar</button>
+  </div>
+</div>
 
 <script>
-// ===== DATOS =====
-const TAGS=['Limpieza cabaña','Blanquería','Desayuno','Restaurante','Check-in','Wi-Fi','Ruido','Mantenimiento','Acceso playa','Equipamiento','Horarios','Precio'];
-const STAR_FIELDS=['checkin','recep','limpieza','comfort','blanq','desay-var','desay-pres','rest-cal','rest-aten','rest-precio','comunes','privacidad','playa','seguridad','precio'];
-let ratings={},choices={},npsVal=null,npsChart=null,activeFilt='all',modalIdx=-1,qrObj=null;
-let responses=[];
-try{responses=JSON.parse(localStorage.getItem('plr_v1')||'[]');}catch(e){}
-function save(){try{localStorage.setItem('plr_v1',JSON.stringify(responses));}catch(e){}}
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnora4pDoZNDpsIWbds3NqIl8Ms2g6WxXgyPQpopIvZG4FpiXQEZsuyOWMRmBHNUfc/exec';
+const TAGS = ['Limpieza cabaña','Blanquería','Desayuno','Restaurante','Check-in','Wi-Fi','Ruido','Mantenimiento','Acceso playa','Equipamiento','Horarios','Precio'];
+const STAR_FIELDS = ['checkin','recep','limpieza','comfort','blanq','desay-var','desay-pres','rest-cal','rest-aten','rest-precio','comunes','privacidad','playa','seguridad','precio'];
+let ratings={}, choices={}, npsVal=null, lastPayload=null;
 
-// ===== ENCUESTA =====
 function buildStars(id,field){
   const c=document.getElementById('s-'+id);if(!c)return;
-  for(let i=1;i<=5;i++){const s=document.createElement('span');s.className='star';s.textContent='★';s.dataset.v=i;s.onclick=()=>setRating(field,i,id);c.appendChild(s);}
+  for(let i=1;i<=5;i++){const s=document.createElement('span');s.className='star';s.textContent='★';s.dataset.v=i;s.onclick=()=>{ratings[field]=i;document.querySelectorAll('#s-'+id+' .star').forEach(x=>x.classList.toggle('active',+x.dataset.v<=i));};c.appendChild(s);}
 }
-function setRating(f,val,id){ratings[f]=val;document.querySelectorAll('#s-'+id+' .star').forEach(s=>s.classList.toggle('active',+s.dataset.v<=val));}
 function selChoice(el,g){document.querySelectorAll('[onclick*="\''+g+'\'"]').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');choices[g]=el.textContent;}
 function toggleRest(el){document.getElementById('rest-detail').style.display=el.textContent==='No utilicé'?'none':'block';}
-function toggleTag(el){el.classList.toggle('sel');}
 function clearE(f){document.getElementById('inp-'+f).classList.remove('err');document.getElementById('err-'+f).classList.remove('show');}
-function chkStep1(){
-  const ok=document.getElementById('inp-name').value.trim().length>=2&&document.getElementById('inp-phone').value.trim().length>=6;
-  const btn=document.getElementById('btn-step1');btn.disabled=!ok;btn.style.opacity=ok?'1':'0.5';
-}
-function buildNPS(){
-  const r=document.getElementById('nps-row');
-  for(let i=0;i<=10;i++){const b=document.createElement('button');b.className='nps-btn';b.textContent=i;b.onclick=()=>{npsVal=i;document.querySelectorAll('#nps-row .nps-btn').forEach(x=>x.classList.toggle('active',+x.textContent===i));document.getElementById('submit-btn').disabled=false;};r.appendChild(b);}
-}
-function buildTags(){
-  const c=document.getElementById('tags-container');
-  TAGS.forEach(t=>{const s=document.createElement('span');s.className='tag';s.textContent=t;s.onclick=()=>s.classList.toggle('sel');c.appendChild(s);});
-}
+function chkStep1(){const ok=document.getElementById('inp-name').value.trim().length>=2&&document.getElementById('inp-phone').value.trim().length>=6;const btn=document.getElementById('btn-step1');btn.disabled=!ok;btn.style.opacity=ok?'1':'0.5';}
+function buildNPS(){const r=document.getElementById('nps-row');for(let i=0;i<=10;i++){const b=document.createElement('button');b.className='nps-btn';b.textContent=i;b.onclick=()=>{npsVal=i;document.querySelectorAll('#nps-row .nps-btn').forEach(x=>x.classList.toggle('active',+x.textContent===i));document.getElementById('submit-btn').disabled=false;};r.appendChild(b);}}
+function buildTags(){const c=document.getElementById('tags-container');TAGS.forEach(t=>{const s=document.createElement('span');s.className='tag';s.textContent=t;s.onclick=()=>s.classList.toggle('sel');c.appendChild(s);});}
 function goStep(n){for(let i=1;i<=5;i++)document.getElementById('step-'+i).style.display=i===n?'':'none';window.scrollTo&&window.scrollTo({top:0,behavior:'smooth'});}
+
 function submitSurvey(){
-  const name=document.getElementById('inp-name').value.trim(),phone=document.getElementById('inp-phone').value.trim();
+  const name=document.getElementById('inp-name').value.trim();
+  const phone=document.getElementById('inp-phone').value.trim();
   if(name.length<2){document.getElementById('inp-name').classList.add('err');document.getElementById('err-name').classList.add('show');goStep(1);return;}
   if(phone.length<6){document.getElementById('inp-phone').classList.add('err');document.getElementById('err-phone').classList.add('show');goStep(1);return;}
   const tags=[...document.querySelectorAll('#tags-container .tag.sel')].map(t=>t.textContent);
-  responses.push({ts:Date.now(),name,phone,aloj:choices['aloj']||'',ratings:{...ratings},choices:{...choices},nps:npsVal,tags,comment:document.getElementById('comment').value.trim(),actions:[],status:'pending'});
-  save();
+  lastPayload={ts:Date.now(),name,phone,aloj:choices['aloj']||'',ratings:{...ratings},choices:{...choices},nps:npsVal,tags,comment:document.getElementById('comment').value.trim()};
+  sendData(lastPayload);
+}
+
+function sendData(payload){
   document.getElementById('survey-form').style.display='none';
-  document.getElementById('survey-thanks').style.display='';
-}
-function resetSurvey(){
-  ratings={};choices={};npsVal=null;
-  STAR_FIELDS.forEach(f=>{const c=document.getElementById('s-'+f);if(c)c.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));});
-  document.querySelectorAll('.choice-opt').forEach(e=>e.classList.remove('sel'));
-  document.querySelectorAll('#tags-container .tag').forEach(t=>t.classList.remove('sel'));
-  document.querySelectorAll('#nps-row .nps-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('comment').value='';document.getElementById('inp-name').value='';document.getElementById('inp-phone').value='';
-  ['name','phone'].forEach(f=>clearE(f));
-  document.getElementById('rest-detail').style.display='none';
-  document.getElementById('submit-btn').disabled=true;
-  document.getElementById('survey-form').style.display='';document.getElementById('survey-thanks').style.display='none';
-  goStep(1);
+  document.getElementById('sending').style.display='';
+  document.getElementById('survey-error').style.display='none';
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)})
+    .then(()=>{
+      document.getElementById('sending').style.display='none';
+      document.getElementById('survey-thanks').style.display='';
+    })
+    .catch(()=>{
+      document.getElementById('sending').style.display='none';
+      document.getElementById('survey-error').style.display='';
+    });
 }
 
-// ===== TABS =====
-function showTab(tab){
-  ['survey','dashboard','followup','actions','qr'].forEach(t=>{document.getElementById('view-'+t).style.display=t===tab?'':'none';document.getElementById('tab-'+t).classList.toggle('active',t===tab);});
-  if(tab==='dashboard')renderDash();
-  if(tab==='followup')renderFollowup();
-  if(tab==='actions')renderActions();
-  if(tab==='qr'&&!qrObj)setTimeout(initQR,100);
+function retrySubmit(){
+  if(lastPayload)sendData(lastPayload);
 }
 
-// ===== QR =====
-function initQR(){
-  const url=document.getElementById('qr-url').value.trim();
-  document.getElementById('qr-code').innerHTML='';
-  try{qrObj=new QRCode(document.getElementById('qr-code'),{text:url,width:220,height:220,colorDark:'#1a1a1a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});}catch(e){console.error(e);}
-}
-function regenQR(){qrObj=null;initQR();}
-function downloadQR(){
-  setTimeout(()=>{
-    const canvas=document.querySelector('#qr-code canvas');
-    if(!canvas){alert('El QR aún se está generando. Esperá un momento e intentá de nuevo.');return;}
-    const a=document.createElement('a');a.download='QR_PlayaLunaRoja.png';a.href=canvas.toDataURL('image/png');a.click();
-  },400);
-}
-function printQR(){
-  const canvas=document.querySelector('#qr-code canvas');
-  if(!canvas){alert('El QR aún se está generando.');return;}
-  const img=canvas.toDataURL('image/png');
-  const w=window.open('','_blank','width=600,height=700');
-  w.document.write(`<!DOCTYPE html><html><head><title>QR Playa Luna Roja</title>
-  <style>body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Segoe UI',sans-serif;gap:14px;background:#fff;}
-  h2{font-size:22px;font-weight:700;color:#1a1a1a;}p{font-size:13px;color:#666;text-align:center;}
-  .url{font-size:10px;color:#aaa;word-break:break-all;max-width:280px;}
-  .btn{margin-top:10px;padding:10px 24px;background:#185FA5;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
-  @media print{.btn{display:none;}}</style></head>
-  <body><h2>🏖️ Playa Luna Roja</h2>
-  <img src="${img}" width="260" height="260" alt="QR Encuesta"/>
-  <p>Escaneá y contanos tu experiencia</p>
-  <p class="url">${document.getElementById('qr-url').value}</p>
-  <button class="btn" onclick="window.print()">🖨️ Imprimir</button>
-  </body></html>`);
-  w.document.close();
-}
-
-// ===== EXCEL =====
-function exportExcel(){
-  if(!responses.length){alert('No hay respuestas para exportar. Cargá datos demo primero.');return;}
-  const wb=XLSX.utils.book_new();
-  const fd=ts=>new Date(ts).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
-  const rows1=responses.map(r=>({'Fecha':fd(r.ts),'Nombre':r.name,'Teléfono':r.phone,'Alojamiento':r.aloj||'',
-    'Check-in':r.ratings.checkin||'','Recepción':r.ratings.recep||'','Limpieza':r.ratings.limpieza||'','Comodidad':r.ratings.comfort||'','Blanquería':r.ratings.blanq||'',
-    'Desayuno variedad':r.ratings['desay-var']||'','Desayuno presentación':r.ratings['desay-pres']||'',
-    'Rest. calidad':r.ratings['rest-cal']||'','Rest. atención':r.ratings['rest-aten']||'','Rest. precio/porción':r.ratings['rest-precio']||'',
-    'Esp. comunes':r.ratings.comunes||'','Privacidad':r.ratings.privacidad||'','Acceso playa':r.ratings.playa||'','Seguridad':r.ratings.seguridad||'','Precio/valor':r.ratings.precio||'',
-    'NPS':r.nps,'Cómo nos conoció':r.choices['como-conocio']||'','Volvería':r.choices['volveria']||'',
-    'Uso restaurante':r.choices['uso-rest']||'','Expectativas':r.choices['expectativa']||'',
-    'Puntos de mejora':(r.tags||[]).join(', '),'Comentario':r.comment||''}));
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows1),'Respuestas');
-
-  const rows2=responses.map(r=>({'Fecha':fd(r.ts),'Nombre':r.name,'Teléfono':r.phone,'Alojamiento':r.aloj||'',
-    'NPS':r.nps,'Categoría':r.nps>=9?'Promotor':r.nps>=7?'Pasivo':'Detractor',
-    'Estado':r.status==='resolved'?'Resuelto':r.status==='in_progress'?'En proceso':r.status==='no_action'?'No aplica':'Pendiente',
-    'N° de acciones':(r.actions||[]).length,
-    'Última acción':r.actions&&r.actions.length?r.actions[r.actions.length-1].type:'',
-    'Último resultado':r.actions&&r.actions.length?r.actions[r.actions.length-1].result:''}));
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows2),'Seguimiento');
-
-  const rows3=responses.flatMap(r=>(r.actions||[]).map(a=>({'Fecha acción':fd(a.ts),'Huésped':r.name,'Teléfono':r.phone,'Alojamiento':r.aloj||'','NPS':r.nps,'Tipo de acción':a.type,'Resultado':a.result,'Descripción':a.note||''})));
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows3.length?rows3:[{Nota:'Sin acciones registradas'}]),'Medidas tomadas');
-
-  XLSX.writeFile(wb,'PlayaLunaRoja_Encuestas_'+new Date().toLocaleDateString('es-AR').replace(/\//g,'-')+'.xlsx');
-}
-
-// ===== DASHBOARD =====
-function avg(arr){return arr.length?+(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1):0;}
-function npsCat(n){return n>=9?'promoter':n>=7?'passive':'detractor';}
-function catLabel(c){return c==='promoter'?'Promotor':c==='passive'?'Pasivo':'Detractor';}
-function catStyle(c){return c==='promoter'?'background:var(--green-light);color:var(--green-dark)':c==='passive'?'background:var(--amber-light);color:#633806':'background:var(--red-light);color:var(--red)';}
-function statusLabel(s){return s==='resolved'?'Resuelto':s==='in_progress'?'En proceso':s==='no_action'?'No aplica':'Pendiente';}
-function statusStyle(s){return s==='resolved'?'background:var(--green-light);color:var(--green-dark)':s==='in_progress'?'background:var(--blue-light);color:#0C447C':s==='no_action'?'background:#F1EFE8;color:#5F5E5A':'background:var(--amber-light);color:#633806';}
-function renderBars(id,items,color){
-  const el=document.getElementById(id);if(!el)return;
-  const valid=items.filter(i=>i.v>0);
-  if(!valid.length){el.innerHTML='<em style="font-size:13px;color:var(--text2)">Sin datos aún. Cargá datos demo.</em>';return;}
-  const max=Math.max(...items.map(i=>i.v));
-  el.innerHTML=items.map(i=>{const p=max?Math.round(i.v/max*100):0;return`<div class="bar-row"><span style="min-width:170px;color:var(--text2);font-size:12px;">${i.l}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${color}"></div></div><span style="min-width:32px;text-align:right;font-weight:600;font-size:13px;">${typeof i.v==='number'&&i.v%1!==0?i.v.toFixed(1):i.v}</span></div>`;}).join('');
-}
-function renderDash(){
-  const n=responses.length;document.getElementById('n-resp').textContent=n;
-  if(!n){['bars-cabin','bars-gastro','bars-beach','bars-tipo','bars-conocio','tag-bars'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<em style="font-size:13px;color:var(--text2)">Sin datos. Cargá datos demo.</em>';});['m-overall','m-nps','m-promo','m-vol'].forEach(id=>document.getElementById(id).textContent='—');if(npsChart){npsChart.destroy();npsChart=null;}return;}
-  const allS=responses.flatMap(r=>Object.values(r.ratings||{}).filter(v=>v>0));
-  document.getElementById('m-overall').textContent=(allS.length?avg(allS):0).toFixed(1)+' ★';
-  document.getElementById('m-nps').textContent=avg(responses.map(r=>r.nps));
-  document.getElementById('m-promo').textContent=Math.round(responses.filter(r=>r.nps>=9).length/n*100)+'%';
-  document.getElementById('m-vol').textContent=Math.round(responses.filter(r=>r.choices&&r.choices['volveria']==='Sí, sin dudas').length/n*100)+'%';
-  const g=f=>avg(responses.map(r=>r.ratings&&r.ratings[f]||0).filter(v=>v>0));
-  renderBars('bars-cabin',[{l:'Limpieza',v:g('limpieza')},{l:'Comodidad y equipamiento',v:g('comfort')},{l:'Blanquería',v:g('blanq')}],'#185FA5');
-  renderBars('bars-gastro',[{l:'Desayuno — variedad',v:g('desay-var')},{l:'Desayuno — presentación',v:g('desay-pres')},{l:'Rest. calidad',v:g('rest-cal')},{l:'Rest. atención',v:g('rest-aten')},{l:'Rest. precio/porción',v:g('rest-precio')}],'#0F6E56');
-  renderBars('bars-beach',[{l:'Espacios comunes',v:g('comunes')},{l:'Privacidad',v:g('privacidad')},{l:'Acceso playa',v:g('playa')},{l:'Seguridad',v:g('seguridad')},{l:'Precio/valor',v:g('precio')}],'#BA7517');
-  const cc=(grp,opt)=>responses.filter(r=>r.choices&&r.choices[grp]===opt).length;
-  renderBars('bars-tipo',[{l:'Cabaña',v:cc('aloj','Cabaña')},{l:'Suite',v:cc('aloj','Suite')}],'#639922');
-  renderBars('bars-conocio',[{l:'Redes sociales',v:cc('como-conocio','Redes sociales')},{l:'Recomendación',v:cc('como-conocio','Recomendación')},{l:'Booking / web',v:cc('como-conocio','Booking / web')},{l:'Ya conocía',v:cc('como-conocio','Ya conocía')}],'#7F77DD');
-  const tc={};TAGS.forEach(t=>{tc[t]=responses.reduce((s,r)=>s+(r.tags&&r.tags.includes(t)?1:0),0);});
-  const st=Object.entries(tc).sort((a,b)=>b[1]-a[1]).filter(([,c])=>c>0);const mx=st[0]?.[1]||1;
-  const tb=document.getElementById('tag-bars');tb.innerHTML='';
-  if(!st.length)tb.innerHTML='<em style="font-size:13px;color:var(--text2)">Sin mejoras seleccionadas.</em>';
-  else st.forEach(([tag,count])=>{const p=Math.round(count/mx*100);const col=p>60?'#A32D2D':p>30?'#BA7517':'#185FA5';tb.innerHTML+=`<div class="bar-row"><span style="min-width:170px;color:var(--text2);font-size:12px;">${tag}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"></div></div><span style="min-width:32px;text-align:right;font-weight:600">${count}</span></div>`;});
-  const nd=Array(11).fill(0);responses.forEach(r=>{if(r.nps!=null)nd[r.nps]++;});
-  if(npsChart)npsChart.destroy();
-  const ctx=document.getElementById('nps-chart').getContext('2d');
-  npsChart=new Chart(ctx,{type:'bar',data:{labels:Array.from({length:11},(_,i)=>i),datasets:[{data:nd,backgroundColor:nd.map((_,i)=>i>=9?'#1D9E75':i<=6?'#D85A30':'#FAC775'),borderWidth:0,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{autoSkip:false}},y:{beginAtZero:true,ticks:{stepSize:1}}}}});
-}
-
-// ===== SEGUIMIENTO =====
-function renderFollowup(){
-  const filtered=responses.filter(r=>activeFilt==='all'?true:activeFilt==='pending'?r.status==='pending':npsCat(r.nps)===activeFilt);
-  const total=responses.length,pend=responses.filter(r=>r.status==='pending').length,res=responses.filter(r=>r.status==='resolved').length,inp=responses.filter(r=>r.status==='in_progress').length;
-  document.getElementById('fu-stats').innerHTML=`<div class="metric-card"><div class="metric-val">${total}</div><div class="metric-lbl">Total</div></div><div class="metric-card"><div class="metric-val" style="color:var(--amber)">${pend}</div><div class="metric-lbl">Pendientes</div></div><div class="metric-card"><div class="metric-val" style="color:var(--blue)">${inp}</div><div class="metric-lbl">En proceso</div></div><div class="metric-card"><div class="metric-val" style="color:#1D9E75">${res}</div><div class="metric-lbl">Resueltos</div></div>`;
-  const el=document.getElementById('followup-list');
-  if(!filtered.length){el.innerHTML='<p style="font-size:13px;color:var(--text2);padding:.75rem 0;">Sin registros en esta categoría. Cargá datos demo para ver el panel.</p>';return;}
-  el.innerHTML=filtered.slice().reverse().map(r=>{
-    const idx=responses.indexOf(r);const cat=npsCat(r.nps);
-    const ini=(r.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-    const date=new Date(r.ts).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});
-    const allS=Object.values(r.ratings||{}).filter(v=>v>0);const score=allS.length?avg(allS).toFixed(1):'—';
-    const la=r.actions&&r.actions.length?r.actions[r.actions.length-1]:null;
-    const pc=cat==='detractor'?'#D85A30':cat==='passive'?'#BA7517':'#1D9E75';
-    return`<div class="card-case" onclick="openModal(${idx})"><div style="display:flex;align-items:center;gap:10px;"><div style="width:8px;height:8px;border-radius:50%;background:${pc};flex-shrink:0;"></div><div style="width:34px;height:34px;border-radius:50%;background:var(--blue-light);color:var(--blue);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${ini}</div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.name}</div><div style="font-size:12px;color:var(--text2);">${r.phone}${r.aloj?' · '+r.aloj:''}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;"><span class="pill" style="${catStyle(cat)}">${catLabel(cat)} · NPS ${r.nps}</span><span class="pill" style="${statusStyle(r.status)}">${statusLabel(r.status)}</span></div><span style="font-size:16px;color:var(--text3);flex-shrink:0;">›</span></div>${la?`<div style="margin-top:7px;padding-top:7px;border-top:0.5px solid var(--border2);font-size:12px;color:var(--text2);display:flex;gap:5px;">🕐 <span>Última acción: <strong>${la.type}</strong> — ${la.result}</span></div>`:''}${r.comment?`<div style="margin-top:5px;font-size:12px;color:var(--text3);font-style:italic;padding-left:18px;">"${r.comment.slice(0,80)}${r.comment.length>80?'…':''}"</div>`:''}</div>`;
-  }).join('');
-}
-function setFilt(f){
-  activeFilt=f;
-  document.querySelectorAll('.filt').forEach(b=>{b.classList.toggle('active',b.dataset.f===f);});
-  renderFollowup();
-}
-function openModal(idx){
-  modalIdx=idx;const r=responses[idx];document.getElementById('modal-title').textContent=r.name;
-  const cat=npsCat(r.nps);const allS=Object.values(r.ratings||{}).filter(v=>v>0);const score=allS.length?avg(allS).toFixed(1):'—';
-  const rrows=Object.entries({limpieza:'Limpieza',comfort:'Comodidad',blanq:'Blanquería','desay-var':'Desayuno variedad','desay-pres':'Desayuno pres.','rest-cal':'Rest. calidad','rest-aten':'Rest. atención',comunes:'Esp. comunes',privacidad:'Privacidad',playa:'Acceso playa',seguridad:'Seguridad',precio:'Precio/valor'}).filter(([k])=>r.ratings&&r.ratings[k]).map(([k,l])=>`<div style="font-size:12px;"><span style="color:var(--text2);">${l}:</span> ${'★'.repeat(r.ratings[k])}</div>`).join('');
-  document.getElementById('modal-body').innerHTML=`<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;"><span class="pill" style="${catStyle(cat)}">${catLabel(cat)}</span><span class="pill" style="${statusStyle(r.status)}">${statusLabel(r.status)}</span>${r.aloj?`<span class="pill" style="background:var(--bg2);color:var(--text2);">${r.aloj}</span>`:''}<span class="pill" style="background:var(--bg2);color:var(--text2);">${score} ★</span></div><div style="font-size:12px;color:var(--text2);margin-bottom:8px;">📞 ${r.phone}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;margin-bottom:10px;">${rrows}</div>${r.tags&&r.tags.length?`<div style="margin-bottom:8px;">${r.tags.map(t=>`<span class="tag sel" style="cursor:default;font-size:11px;">${t}</span>`).join('')}</div>`:''}${r.comment?`<div style="font-size:12px;color:var(--text2);font-style:italic;padding:8px 12px;background:var(--bg2);border-radius:var(--radius-sm);">"${r.comment}"</div>`:''}`;
-  renderModalHistory();
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function renderModalHistory(){
-  const r=responses[modalIdx];const hist=r.actions||[];const el=document.getElementById('modal-history');
-  if(!hist.length){el.innerHTML='';return;}
-  el.innerHTML=`<div style="margin-top:1rem;border-top:0.5px solid var(--border2);padding-top:.9rem;"><p style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Historial</p>${hist.slice().reverse().map(a=>{const iA=a.result&&a.result.startsWith('Aplica');const iN=a.result&&a.result.startsWith('No aplica');const rs=iA?'background:var(--green-light);color:var(--green-dark)':iN?'background:#F1EFE8;color:#5F5E5A':'background:var(--blue-light);color:#0C447C';const d=new Date(a.ts).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'});return`<div style="display:flex;gap:8px;padding:8px 10px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);margin-bottom:5px;font-size:12px;"><div style="flex:1;"><div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;"><strong>${a.type}</strong><span class="pill" style="${rs};font-size:11px;">${a.result}</span><span style="font-size:11px;color:var(--text3);">${d}</span></div>${a.note?`<div style="margin-top:2px;color:var(--text2);">${a.note}</div>`:''}</div></div>`;}).join('')}</div>`;
-}
-function saveAction(){
-  const type=document.getElementById('act-type').value,result=document.getElementById('act-result').value,note=document.getElementById('act-note').value.trim();
-  if(!type||!result){alert('Seleccioná tipo y resultado antes de guardar.');return;}
-  const r=responses[modalIdx];if(!r.actions)r.actions=[];
-  r.actions.push({ts:Date.now(),type,result,note});
-  if(result==='Aplica — resuelto')r.status='resolved';
-  else if(result==='Aplica — en proceso')r.status='in_progress';
-  else if(result==='No aplica — sin acción')r.status='no_action';
-  save();document.getElementById('act-type').value='';document.getElementById('act-result').value='';document.getElementById('act-note').value='';
-  renderModalHistory();
-}
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open');renderFollowup();}
-document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-
-// ===== MEDIDAS =====
-function renderActions(){
-  const all=responses.flatMap(r=>(r.actions||[]).map(a=>({...a,guest:r.name,nps:r.nps})));
-  const n=all.length,res=all.filter(a=>a.result&&a.result.startsWith('Aplica — resuelto')).length,inp=all.filter(a=>a.result&&a.result.startsWith('Aplica — en proceso')).length,noA=all.filter(a=>a.result&&a.result.startsWith('No aplica')).length;
-  document.getElementById('act-metrics').innerHTML=`<div class="metric-card"><div class="metric-val">${n}</div><div class="metric-lbl">Acciones</div></div><div class="metric-card"><div class="metric-val" style="color:#1D9E75">${res}</div><div class="metric-lbl">Resueltos</div></div><div class="metric-card"><div class="metric-val" style="color:var(--blue)">${inp}</div><div class="metric-lbl">En proceso</div></div><div class="metric-card"><div class="metric-val" style="color:#888">${noA}</div><div class="metric-lbl">No aplica</div></div>`;
-  const tc={};all.forEach(a=>{tc[a.type]=(tc[a.type]||0)+1;});const st=Object.entries(tc).sort((a,b)=>b[1]-a[1]);const mx=st[0]?.[1]||1;
-  const tb=document.getElementById('act-type-bars');tb.innerHTML='';
-  if(!st.length)tb.innerHTML='<em style="font-size:13px;color:var(--text2)">Sin acciones registradas.</em>';
-  else st.forEach(([t,c])=>{const p=Math.round(c/mx*100);tb.innerHTML+=`<div class="bar-row"><span style="min-width:170px;color:var(--text2);font-size:12px;">${t}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:var(--blue)"></div></div><span style="min-width:28px;text-align:right;font-weight:600">${c}</span></div>`;});
-  const rc={};all.forEach(a=>{rc[a.result]=(rc[a.result]||0)+1;});const sr=Object.entries(rc).sort((a,b)=>b[1]-a[1]);const mr=sr[0]?.[1]||1;
-  const rb=document.getElementById('act-result-bars');rb.innerHTML='';
-  if(!sr.length)rb.innerHTML='<em style="font-size:13px;color:var(--text2)">Sin resultados.</em>';
-  else sr.forEach(([r2,c])=>{const p=Math.round(c/mr*100);const col=r2.startsWith('Aplica — resuelto')?'#1D9E75':r2.startsWith('Aplica — en proceso')?'#185FA5':r2.startsWith('No aplica')?'#888':'#BA7517';rb.innerHTML+=`<div class="bar-row"><span style="min-width:170px;color:var(--text2);font-size:12px;">${r2}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col}"></div></div><span style="min-width:28px;text-align:right;font-weight:600">${c}</span></div>`;});
-  const al=document.getElementById('act-all-list');
-  if(!all.length){al.innerHTML='<em style="font-size:13px;color:var(--text2)">Sin acciones. Usá el panel de Seguimiento para registrar medidas.</em>';return;}
-  al.innerHTML=all.slice().sort((a,b)=>b.ts-a.ts).map(a=>{const iA=a.result&&a.result.startsWith('Aplica');const iN=a.result&&a.result.startsWith('No aplica');const rs=iA?'background:var(--green-light);color:var(--green-dark)':iN?'background:#F1EFE8;color:#5F5E5A':'background:var(--blue-light);color:#0C447C';const d=new Date(a.ts).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'});return`<div class="action-row"><div style="flex:1;min-width:0;"><div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;"><strong style="font-size:13px;">${a.guest}</strong><span style="font-size:11px;color:var(--text3);">NPS ${a.nps}</span><span class="pill" style="${rs};font-size:11px;">${a.result}</span><span style="font-size:11px;color:var(--text3);">${d}</span></div><div style="font-size:12px;color:var(--text2);margin-top:2px;">${a.type}${a.note?' — '+a.note:''}</div></div></div>`;}).join('');
-}
-
-// ===== DEMO =====
-function loadDemo(){
-  const names=['María González','Carlos Rodríguez','Laura Méndez','Javier Herrera','Sofía Castro','Andrés López','Valentina Ríos','Martín Fernández','Paula Suárez','Diego Morales'];
-  const phones=['+54 9 223 411 2233','+54 9 11 5678 9012','+54 9 351 444 5566','+54 9 261 777 8899','+54 9 223 500 1122','+54 9 11 4321 6789','+54 9 221 333 4455','+54 9 223 600 7788','+54 9 11 9988 7766','+54 9 341 222 3344'];
-  const aloj=['Cabaña','Suite','Cabaña','Cabaña','Suite','Suite','Cabaña','Suite','Cabaña','Suite'];
-  const comments=['Excelente, la cabaña increíble y el desayuno muy completo.','El Wi-Fi de la cabaña no funcionaba bien.','La blanquería estaba impecable.','El restaurante tardó mucho en atendernos.','Todo perfecto, volvemos seguro.','La calefacción de la suite falló una noche.','Personal muy amable, desayuno podría tener más fruta.','','Acceso a la playa excelente, tranquilidad total.','El deck de la cabaña estaba deteriorado.'];
-  const demoActs=[[{type:'Llamada telefónica',result:'Aplica — resuelto',note:'Se ofreció descuento en próxima estadía'}],[{type:'WhatsApp',result:'Aplica — en proceso',note:'Técnico revisará el router en 24hs'}],[{type:'Email',result:'No aplica — sin acción',note:'Comentario positivo'}],[{type:'Llamada telefónica',result:'Sin respuesta del huésped',note:''}],[],[{type:'Atención presencial',result:'Aplica — resuelto',note:'Se cambió suite y reparó calefacción'}],[],[],[],[{type:'WhatsApp',result:'Aplica — en proceso',note:'Programado mantenimiento del deck'}]];
-  const conocio=['Redes sociales','Recomendación','Booking / web','Recomendación','Ya conocía','Redes sociales','Booking / web','Recomendación','Ya conocía','Redes sociales'];
-  for(let i=0;i<names.length;i++){
-    const nps=i<2?Math.floor(3+Math.random()*4):i<5?Math.floor(6+Math.random()*3):Math.floor(9+Math.random()*2);
-    const tags=TAGS.slice(0,Math.floor(Math.random()*3)).sort(()=>Math.random()-.5);
-    const r={checkin:Math.floor(3+Math.random()*3),recep:Math.floor(3+Math.random()*3),limpieza:Math.floor(3+Math.random()*3),comfort:Math.floor(2+Math.random()*4),blanq:Math.floor(3+Math.random()*3),'desay-var':Math.floor(2+Math.random()*4),'desay-pres':Math.floor(3+Math.random()*3),'rest-cal':Math.floor(2+Math.random()*4),'rest-aten':Math.floor(2+Math.random()*4),'rest-precio':Math.floor(2+Math.random()*4),comunes:Math.floor(2+Math.random()*4),privacidad:Math.floor(3+Math.random()*3),playa:Math.floor(3+Math.random()*3),seguridad:Math.floor(3+Math.random()*3),precio:Math.floor(2+Math.random()*4)};
-    const actions=(demoActs[i]||[]).map(a=>({...a,ts:Date.now()-i*86400000*2}));
-    let status='pending';if(actions.length){const l=actions[actions.length-1];if(l.result.startsWith('Aplica — resuelto'))status='resolved';else if(l.result.startsWith('Aplica — en proceso'))status='in_progress';else if(l.result.startsWith('No aplica'))status='no_action';}
-    responses.push({ts:Date.now()-i*86400000,name:names[i],phone:phones[i],aloj:aloj[i],ratings:r,choices:{aloj:aloj[i],'como-conocio':conocio[i],'volveria':nps>=8?'Sí, sin dudas':nps>=6?'Probablemente':'No lo creo'},nps,tags,comment:comments[i],actions,status});
-  }
-  save();renderDash();renderFollowup();renderActions();
-}
-function clearData(){if(!confirm('¿Limpiar todas las respuestas? Esta acción no se puede deshacer.'))return;responses=[];save();renderDash();renderFollowup();renderActions();}
-
-// ===== INICIALIZAR =====
 STAR_FIELDS.forEach(f=>buildStars(f,f));
 buildNPS();
 buildTags();
-// Pre-generar QR al cargar
-window.addEventListener('load',()=>setTimeout(()=>{
-  if(document.getElementById('qr-code')&&!qrObj)initQR();
-},300));
 </script>
 </body>
 </html>
